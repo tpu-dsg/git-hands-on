@@ -6,6 +6,8 @@ import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://tpu-dsg.github.io',
+  base: '/git-hands-on',
   integrations: [
     starlight({
       title: "入門 Git/GitHub",
