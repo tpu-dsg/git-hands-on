@@ -1,0 +1,118 @@
+---
+title: 認証情報(SSH)
+---
+
+import { Steps } from "@astrojs/starlight/components";
+
+Gitはローカルリポジトリとリモートリポジトリを連携して使います。リモートリポジトリとは文字通りリモートサーバにあるリポジトリで、ネットワークを介してアクセスすることになります。ネットワーク越しにアクセスする以上、なんらかの方法で通信相手が本当に正しい相手であるかを確認する必要があります。
+
+このページでは、**SSH**を使用する場合の認証情報の設定方法について説明します。**HTTPS**を使用する場合の認証情報の設定方法については[認証情報(HTTPS)](../https)を参照してください。
+
+:::note
+ドキュメント全体ではHTTPSを使用する場合とSSHを使用する場合のどちらも扱いますが、最低限**どちらか一方**の設定が必要です。
+:::
+
+## SSHキーの生成
+
+以下のコマンドを実行します。
+
+```bash
+mkdir ~/.ssh
+```
+
+```bash
+ssh-keygen -t ed25519
+```
+
+パスワードを聞かれるので入力します。パスワードを入力しても何も表示されませんが、入力されています。パスワードを入力した後、Enterキーを押します。
+:::caution
+パスワードを設定しないのはセキュリティ上のリスクがあるため、設定することをお勧めします。
+:::
+SSHキーが生成されると、以下のようなメッセージが表示されます。
+
+```bash
+The key's randomart image is:
++--[ED25519 256]--+
+|++++oB+ o.       |
+|*++**.oo         |
+|*++o.o.          |
+|+o. E  .         |
+|o+ o... S .      |
+|. =. * o =       |
+| . oo + o o      |
+|. .      . .     |
+|o.               |
++----[SHA256]-----+
+```
+
+## 公開鍵の登録
+
+生成したSSHキーの公開鍵をGitHubに登録します。
+
+<Steps>
+  1. 以下のコマンドで公開鍵を表示し、マウスで選択してコピーします
+     ```bash 
+     cat ~/.ssh/id_ed25519.pub 
+     ``` 
+  2. GitHubにログインし、右上のアイコンをクリックし、`Settings`を選択します 
+  3. 左のAccess内の`SSH and GPG keys`を選択し、`New SSH key`をクリックします 
+  4. Titleに任意の名前を入力し、Keyに先ほどコピーした公開鍵を貼り付けます。KeytypeはAuthentication Keyのままにします
+</Steps>
+
+## 登録の確認
+
+以下のコマンドを実行して、GitHubに登録した公開鍵が正しく登録されているか確認します。
+
+```bash
+ssh -T git@github.com
+```
+
+もし`Are you sure you want to continue connecting (yes/no/[fingerprint])?`というメッセージが表示されたら`yes`と入力します。
+
+パスフレーズを求められたら、先ほど設定したパスワードを入力します。GitHubに登録した公開鍵が正しく登録されていると、以下のようなメッセージが表示されます。
+
+```bash
+Hi <ユーザー名>! You've successfully authenticated, but GitHub does not provide shell access.
+```
+
+## SSHエージェントの設定
+
+SSHエージェントを設定することで、パスフレーズを毎回入力する必要がなくなります。
+
+Windowsの場合、以下のコマンドをホームディレクトリ直下の`.bashrc`に貼り付けることでSSHエージェントが自動起動するように構成できます。
+
+```bash
+env=~/.ssh/agent.env
+
+agent_load_env () { test -f "$env" && . "$env" >| /dev/null ; }
+
+agent_start () {
+    (umask 077; ssh-agent >| "$env")
+    . "$env" >| /dev/null ; }
+
+agent_load_env
+
+# agent_run_state: 0=agent running w/ key; 1=agent w/o key; 2=agent not running
+agent_run_state=$(ssh-add -l >| /dev/null 2>&1; echo $?)
+
+if [ ! "$SSH_AUTH_SOCK" ] || [ $agent_run_state = 2 ]; then
+    agent_start
+    ssh-add
+elif [ "$SSH_AUTH_SOCK" ] && [ $agent_run_state = 1 ]; then
+    ssh-add
+fi
+
+unset env
+```
+
+以下のコマンドを実行して鍵を登録します。
+
+```bash
+ssh-add ~/.ssh/id_ed25519
+```
+
+登録できたか確認するために以下のコマンドを実行します。
+
+```bash
+ssh-add -l
+```
