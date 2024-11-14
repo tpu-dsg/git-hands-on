@@ -41,16 +41,16 @@ jobs:
         uses: actions/deploy-pages@v1
   check:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: docs
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
           cache: 'npm'
-          cache-dependency-path: docs/package-lock.json
       - name: Install dependencies
-        run: |
-          cd docs
-          npm ci
+        run: npm ci
       - name: Check formatting
         run: npm run format:check
