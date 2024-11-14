@@ -1,0 +1,53 @@
+---
+title: Windows
+sidebar:
+  order: 1
+---
+
+import { Steps } from "@astrojs/starlight/components";
+export const baseUrl = "{import.meta.env.BASE_URL}";
+
+Windows環境へのインストール方法を紹介します。
+
+:::note
+Windows Subsystem for Linux(WSL)でGitを使用する場合は、[Linux](../linux)を参照してください
+:::
+
+## Git for Windowsのインストール
+
+[Git for Windowsの公式サイト](https://gitforwindows.org/)からインストーラーをダウンロードして実行します。
+
+<Steps>
+
+1. ライセンスを読み、同意します。
+   ![Git for Windows](../../../../assets/git-for-windows/1_license.png)
+2. インストール先を選択します。デフォルトのままで問題ありません。
+   ![Git for Windows](../../../../assets/git-for-windows/2_location.png)
+3. コンポーネントの選択画面では、こだわりがなければ以下のように選択します。
+   ![Git for Windows](../../../../assets/git-for-windows/3_components.png)
+4. スタートメニューのフォルダを選択します。デフォルトのままで問題ありません。
+   ![Git for Windows](../../../../assets/git-for-windows/4_start-menu.png)
+5. エディタの選択画面では、普段使用しているエディタを選択します。VSCodeを推奨します。
+   ![Git for Windows](../../../../assets/git-for-windows/5_editor.png)
+6. ブランチの名前はオーバーライドし、`main`に変更します。（`master`はセンシティブな用語だとみなされており、[置き換える動き](https://www.publickey1.jp/blog/20/githubmainmastermain.html)があります。）
+   ![Git for Windows](../../../../assets/git-for-windows/6_branch.png)
+7. PATHの設定は、推奨されている設定を選択します。
+   ![Git for Windows](../../../../assets/git-for-windows/7_path.png)
+8. SSHの選択画面では、バンドルされているOpenSSHを選択します。
+   ![Git for Windows](../../../../assets/git-for-windows/8_ssh.png)
+9. HTTPSバックエンドの選択画面では、OpenSSLを選択します。
+   ![Git for Windows](../../../../assets/git-for-windows/9_ssl.png)
+10. line-endingの選択画面では、以下のように選択します。
+    ![Git for Windows](../../../../assets/git-for-windows/10_line-ending.png)
+11. ターミナルの選択画面では、MinTTYを選択します。
+    ![Git for Windows](../../../../assets/git-for-windows/11_emulator.png)
+12. `git pull`動作の選択画面では、以下のように選択します。
+    ![Git for Windows](../../../../assets/git-for-windows/12_pull.png)
+13. credential helperの選択画面では、以下のように選択します。
+    ![Git for Windows](../../../../assets/git-for-windows/13_credential.png)
+14. extraの選択画面では、以下のように選択します。
+    ![Git for Windows](../../../../assets/git-for-windows/14_extra.png)
+15. インストールを開始します。
+    ![Git for Windows](../../../../assets/git-for-windows/15_install.png)
+
+</Steps>

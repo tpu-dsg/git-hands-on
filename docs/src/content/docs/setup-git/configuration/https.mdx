@@ -1,0 +1,73 @@
+---
+title: 認証情報(HTTPS)
+---
+
+import { Steps } from "@astrojs/starlight/components";
+import { LinkCard } from "@astrojs/starlight/components";
+
+Gitはローカルリポジトリとリモートリポジトリを連携して使います。リモートリポジトリとは文字通りリモートサーバにあるリポジトリで、ネットワークを介してアクセスすることになります。ネットワーク越しにアクセスする以上、なんらかの方法で通信相手が本当に正しい相手であるかを確認する必要があります。
+
+このページでは、**HTTPS**を使用する場合の認証情報の設定方法について説明します。**SSH**を使用する場合の認証情報の設定方法については[認証情報(SSH)](../ssh)を参照してください。
+
+:::note
+ドキュメント全体ではHTTPSを使用する場合とSSHを使用する場合のどちらも扱いますが、最低限**どちらか一方**の設定が必要です。
+:::
+
+## GitHub CLIのインストール
+
+[GitHub CLI](https://cli.github.com/)を使用して認証します。GitHub CLIは、Windows、Linux、macOSで利用できます。
+
+### Windows
+
+:::note
+Windows Subsystem for Linux(WSL)でGitを使用する場合は、[Linux](#linux)を参照してください
+:::
+以下のコマンドをPowerShellで実行します。
+
+```powershell
+winget install --id GitHub.cli
+```
+
+### Linux
+
+WSLを含むLinux環境(Debian/Ubuntu)では以下のコマンドを実行します。このコマンドは一気に実行してください。
+
+```bash
+(type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y)) \
+	&& sudo mkdir -p -m 755 /etc/apt/keyrings \
+	&& wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
+	&& sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+	&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+	&& sudo apt update \
+	&& sudo apt install gh -y
+```
+
+その他のディストリビューションは、[GitHub CLIの公式ドキュメント](https://github.com/cli/cli/blob/trunk/docs/install_linux.md)を参照してください。
+
+### macOS
+
+macOSでは[Homebrew](https://brew.sh/)を使用します。以下のコマンドを実行してください。
+
+```bash
+brew install gh
+```
+
+## ログイン
+
+GitHub CLIを使用してGitHubにログインします。以下のコマンドを実行してください。
+
+```bash
+gh auth login
+```
+
+- Git 操作の優先プロトコルの入力を求められたら、`HTTPS`を選択します。
+- GitHub 資格情報を使用して Git に対する認証を行うかどうかを確認するメッセージが表示されたら、「`Y`」を入力します。
+
+## 参考：その他の認証方法
+
+Git Credential Managerを使用する方法もあります。
+
+<LinkCard
+  title="Git Credential Manager"
+  href="https://github.com/git-ecosystem/git-credential-manager"
+/>
