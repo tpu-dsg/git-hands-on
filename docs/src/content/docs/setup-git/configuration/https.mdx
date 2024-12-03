@@ -10,7 +10,7 @@ Gitはローカルリポジトリとリモートリポジトリを連携して�
 このページでは、**HTTPS**を使用する場合の認証情報の設定方法について説明します。**SSH**を使用する場合の認証情報の設定方法については[認証情報(SSH)](../ssh)を参照してください。
 
 :::note
-ドキュメント全体ではHTTPSを使用する場合とSSHを使用する場合のどちらも扱いますが、最低限**どちらか一方**の設定が必要です。
+ドキュメント全体ではHTTPSを使用する場合とSSHを使用する場合のどちらも扱いますが、最低限**どちらか**の設定が必要です。どちらを選ぶべきかわからない場合は、**HTTPS**を選択しておくと良いでしょう。
 :::
 
 ## GitHub CLIのインストール
@@ -27,6 +27,8 @@ Windows Subsystem for Linux(WSL)でGitを使用する場合は、[Linux](#linux)
 ```powershell
 winget install --id GitHub.cli
 ```
+
+PowerShellを開き直すと、`gh`コマンドが使えるようになります。
 
 ### Linux
 
@@ -60,8 +62,15 @@ GitHub CLIを使用してGitHubにログインします。以下のコマンド�
 gh auth login
 ```
 
-- Git 操作の優先プロトコルの入力を求められたら、`HTTPS`を選択します。
-- GitHub 資格情報を使用して Git に対する認証を行うかどうかを確認するメッセージが表示されたら、「`Y`」を入力します。
+<Steps>
+1. `Where do you use GitHub?`は、`GitHub.com`を選択します。
+2. `What is your preferred protocol for Git operations on this host?`は、`HTTPS`を選択します。
+3. `Authenticate Git with your GitHub credentials?`は、`Yes`を選択します。
+4. `How would you like to authenticate GitHub CLI?`は、`Login with a web browser`を選択します。
+5. ワンタイムコードが表示されるのでコピーし、Enterを押してブラウザを開きます。
+6. 認証画面にワンタイムコードを貼り付け、GitHubにログインします。
+7. ターミナルに戻り、`✓ Authentication complete.`が表示されれば認証完了です。
+</Steps>
 
 ## 参考：その他の認証方法
 
