@@ -28,6 +28,10 @@ export default defineConfig({
           label: "3. Setup Git",
           autogenerate: { directory: "setup-git" },
         },
+        {
+          label: "4. Exercises",
+          autogenerate: { directory: "exercises" },
+        },
       ],
     }),
     tailwind(),
