@@ -2,8 +2,6 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 
-import tailwind from "@astrojs/tailwind";
-
 // https://astro.build/config
 export default defineConfig({
   site: "https://tpu-dsg.github.io",
@@ -34,6 +32,5 @@ export default defineConfig({
         },
       ],
     }),
-    tailwind(),
   ],
 });
