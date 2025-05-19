@@ -11,9 +11,13 @@ export default defineConfig({
     starlight({
       title: "Gitハンズオン",
       defaultLocale: "ja",
-      social: {
-        github: "https://github.com/tpu-dsg/git-hands-on",
-      },
+      social: [
+        {
+          icon: "github",
+          label: "GitHub",
+          href: "https://github.com/tpu-dsg/git-hands-on",
+        },
+      ],
       sidebar: [
         {
           label: "1. Introduction",
